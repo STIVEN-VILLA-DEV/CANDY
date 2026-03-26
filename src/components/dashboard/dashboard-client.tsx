@@ -23,7 +23,13 @@ export default function DashboardClient() {
 
     try {
       setStatus("extracting");
-      const res = await fetch("/api/analyze", { method: "POST", body: formData });
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData,
+        // Clerk usa cookies de sesión (httpOnly). En algunos entornos/bounds,
+        // hacer explícito el envío de credenciales evita que `auth()` llegue vacío.
+        credentials: "include",
+      });
 
       if (!res.ok) {
         const data = await res.json();

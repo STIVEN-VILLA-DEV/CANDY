@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // unpdf (pdfjs-dist) debe resolverse en runtime Node.js, no bundlearse con webpack
+    serverComponentsExternalPackages: ["unpdf"],
+  },
+
   headers: async () => [
     {
       source: "/(.*)",
@@ -16,11 +21,13 @@ const nextConfig = {
           key: "Content-Security-Policy",
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://clerk.com https://*.clerk.accounts.dev",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-            "font-src 'self' https://fonts.gstatic.com",
+            "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://clerk.com https://*.clerk.accounts.dev",
+            "worker-src blob:",
+            // Las fuentes ahora son self-hosted; ya no necesitamos fonts.googleapis.com
+            "style-src 'self' 'unsafe-inline'",
+            "font-src 'self'",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://generativelanguage.googleapis.com https://fonts.googleapis.com https://fonts.gstatic.com",
+            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://generativelanguage.googleapis.com",
             "frame-src https://clerk.com https://*.clerk.accounts.dev",
           ].join("; "),
         },

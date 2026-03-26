@@ -10,20 +10,24 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.0.0",
+    "@fontsource-variable/dm-sans": "^5.2.8",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/rajdhani": "^5.2.7",
     "@google/generative-ai": "^0.15.0",
     "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.0",
-    "@types/pdf-parse": "^1.1.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.400.0",
     "next": "14.2.5",
-    "pdf-parse": "^2.4.5",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
-    "tailwind-merge": "^2.4.0"
+    "tailwind-merge": "^2.4.0",
+    "unpdf": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

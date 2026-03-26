@@ -54,7 +54,7 @@ export default function HeroSection() {
               className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-5 leading-[1.1]"
             >
               Tu CV no puede{" "}
-              <span className="text-gradient-emerald">exponer tu vida</span>
+              <span className="text-gradient-emerald">exponer privacidad</span>
             </motion.h1>
 
             <motion.p

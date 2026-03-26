@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Variables de fuentes self-hosted (fontsource) */
+:root {
+  --font-heading: "Space Grotesk Variable", "Space Grotesk", sans-serif;
+  --font-sans: "DM Sans Variable", "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
 @layer base {
   * { box-sizing: border-box; }
   body { background-color: #020c08; }
