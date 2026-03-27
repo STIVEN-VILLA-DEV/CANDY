@@ -1,17 +1,12 @@
 import type { Finding } from "../types";
 import { addFinding, hasNearbyKeyword, isLikelyCorporateEmail } from "./finding-utils";
 
-// Límites de seguridad para evitar ReDoS y respuestas infladas
+// Límites de seguridad 
 const MAX_INPUT_CHARS = 12_000;
 const MAX_FINDINGS = 40;
 
-// ---------------------------------------------------------------------------
-// Regex — definidas fuera de la función para no recompilar en cada llamada
-// ---------------------------------------------------------------------------
-
 const EMAIL_REGEX = /\b[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,253}\.[A-Za-z]{2,}\b/g;
 
-// Teléfono: evitamos cuantificadores anidados para prevenir ReDoS
 const PHONE_REGEX = /\+?\d[\d]{6,14}/g;
 
 const CEDULA_REGEX =
@@ -21,13 +16,11 @@ const CC_SHORT_REGEX = /\b(?:c\.?\s*c\.?|cc)\s*[:#-]?\s*([0-9]{6,12})\b/gi;
 
 const NIT_REGEX = /\b(?:n\.?\s*i\.?\s*t\.?|nit)\s*[:#-]?\s*([0-9]{7,12}-?[0-9kK])\b/gi;
 
-// CURP México — formato oficial estricto (18 caracteres exactos)
+
 const CURP_REGEX = /\b[A-Z][AEIOUX][A-Z]{2}\d{6}[HM][A-Z]{5}[A-Z0-9]\d\b/g;
 
-// RFC México — más estricto: 12 chars (persona moral) o 13 (persona física)
-// Evita falsos positivos con siglas comunes
 const RFC_REGEX = /\b[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}\b/g;
-// Palabras comunes que coinciden con el patrón RFC pero no lo son
+
 const RFC_FALSE_POSITIVES = new Set(["PARA", "COMO", "ESTE", "ESTA", "PERO", "SINO"]);
 
 // Fecha de nacimiento — incluye año suelto con contexto
@@ -36,9 +29,7 @@ const DOB_FULL_REGEX =
 const DOB_YEAR_REGEX =
   /\b(?:nacido\s+en|born\s+in|año\s+de\s+nacimiento)\s*[:\-]?\s*(19|20)\d{2}\b/gi;
 
-// Dirección — requiere que la palabra clave vaya seguida de un número para
-// evitar falsos positivos con "cl." (cláusula), "dirección de correo", etc.
-// Patrón: keyword + espacio opcional + número obligatorio + resto acotado.
+// Dirección — requiere que la palabra clave vaya seguida de un número para no tener falsos positivos
 const ADDRESS_STREET_REGEX =
   /\b(?:calle|cl\.?|carrera|cra\.?|kr\.?|avenida|av\.?|transversal|tv\.?|diagonal|diag\.?)\s*\d+[\w\s.,#°\-]{0,60}/gi;
 
@@ -57,11 +48,8 @@ const INSTAGRAM_REGEX = /\bhttps?:\/\/(?:www\.)?instagram\.com\/[^\s)]{1,100}/gi
 const TWITTER_REGEX = /\bhttps?:\/\/(?:www\.)?(?:twitter|x)\.com\/[^\s)]{1,100}/gi;
 const TIKTOK_REGEX = /\bhttps?:\/\/(?:www\.)?tiktok\.com\/[^\s)]{1,100}/gi;
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
-/** Enmascara datos sensibles para no exponerlos completos en la respuesta */
+/** seguridad para no poner los resultados en texto plano y que el usuario se sienta comodo */
 function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
   if (!local || !domain) return "[email]";
@@ -82,12 +70,8 @@ function maskId(digits: string): string {
     : "****";
 }
 
-// ---------------------------------------------------------------------------
-// Extractor principal
-// ---------------------------------------------------------------------------
-
+// Sanitización de entrada
 export function extractDeterministicFindings(rawText: string): Finding[] {
-  // Sanitización de entrada: limitar longitud y eliminar caracteres de control
   const text = rawText
     .slice(0, MAX_INPUT_CHARS)
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, " ");
@@ -99,7 +83,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     addFinding(...args);
   };
 
-  // --- Email ---
+  // correo
   for (const email of Array.from(text.matchAll(EMAIL_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     if (isLikelyCorporateEmail(email[0])) continue;
@@ -112,7 +96,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Cédula (formato largo) ---
+  // Cédula
   for (const match of Array.from(text.matchAll(CEDULA_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     const digits = (match[1] ?? match[0]).replace(/\D/g, "");
@@ -126,7 +110,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Cédula (formato corto: C.C. / cc) ---
+  //Cédula C.C. / cc
   for (const match of Array.from(text.matchAll(CC_SHORT_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     const digits = (match[1] ?? "").replace(/\D/g, "");
@@ -140,7 +124,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- NIT ---
+  // NIT 
   for (const match of Array.from(text.matchAll(NIT_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     const raw = (match[1] ?? "").replace(/\s+/g, "");
@@ -153,7 +137,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Teléfono ---
+  // Teléfono
   const phoneContextKeywords = ["telefono", "cel", "celular", "movil", "whatsapp", "contacto", "llamar", "tel"];
   const idContextKeywords = ["cedula", "dni", "documento", "cc", "identificacion", "nit"];
 
@@ -176,7 +160,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
       findings,
       "Teléfono",
       maskPhone(phone),
-      "Considera usar un número secundario para postulaciones y evita publicarlo en todas las versiones del CV.",
+      "Considera usar un número exclusivamente para postulaciones y evita publicarlo en todas las versiones del CV.",
       "high"
     );
   }
@@ -206,7 +190,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Fecha de nacimiento (completa) ---
+  // Fecha de nacimiento
   for (const dob of Array.from(text.matchAll(DOB_FULL_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     addIfRoom(
@@ -218,7 +202,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Año de nacimiento con contexto ---
+  // Año de nacimiento con contexto
   for (const dob of Array.from(text.matchAll(DOB_YEAR_REGEX))) {
     if (findings.length >= MAX_FINDINGS) break;
     addIfRoom(
@@ -230,7 +214,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Dirección ---
+  // Dirección
   const addressMatches = [
     ...Array.from(text.matchAll(ADDRESS_STREET_REGEX)),
     ...Array.from(text.matchAll(ADDRESS_LABEL_REGEX)),
@@ -248,7 +232,7 @@ export function extractDeterministicFindings(rawText: string): Finding[] {
     );
   }
 
-  // --- Redes sociales ---
+  //Redes sociales
   const socialNetworks: Array<{ regex: RegExp; name: string; tip: string }> = [
     {
       regex: LINKEDIN_REGEX,

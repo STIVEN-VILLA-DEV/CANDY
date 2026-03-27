@@ -1,9 +1,9 @@
 "use client";
-
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock } from "lucide-react";
 import { CvSimulator } from "../ui/cvSimulator";
+import DecryptText from "../ui/decrypt-text";
 
 const LOCKS = [
   { x: "3%",  y: "12%", size: 22, opacity: 0.15, duration: 7,  delay: 0 },
@@ -11,12 +11,12 @@ const LOCKS = [
   { x: "6%",  y: "68%", size: 20, opacity: 0.13, duration: 10, delay: 1.5 },
   { x: "94%", y: "72%", size: 24, opacity: 0.14, duration: 8,  delay: 2.5 },
   { x: "48%", y: "6%",  size: 24, opacity: 0.20, duration: 11, delay: 0.8 },
-  { x: "30%", y: "90%",  size: 24, opacity: 0.20, duration: 11, delay: 0.8 },
+  { x: "30%", y: "90%", size: 24, opacity: 0.20, duration: 11, delay: 0.8 },
 ];
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-20 pb-12">
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
       {/* fondo */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_#10b98112_0%,_transparent_55%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_#00c89608_0%,_transparent_55%)]" />
@@ -28,11 +28,11 @@ export default function HeroSection() {
         }}
       />
 
-      {/* animacion de candados flotantes */}
+      {/* candados flotantes — solo en desktop */}
       {LOCKS.map((lock, i) => (
         <motion.div
           key={i}
-          className="absolute pointer-events-none text-emerald-400"
+          className="absolute pointer-events-none text-emerald-400 hidden md:block"
           style={{ left: lock.x, top: lock.y, opacity: lock.opacity }}
           animate={{ y: [0, -10, 0], rotate: [0, 4, -4, 0] }}
           transition={{ duration: lock.duration, delay: lock.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -42,19 +42,28 @@ export default function HeroSection() {
       ))}
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-          
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="flex flex-col items-start">
-            
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-5 leading-[1.1]"
+              className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-5 leading-[1.15] w-full text-center lg:text-left"
             >
               Tu CV no puede{" "}
-              <span className="text-gradient-emerald">exponer privacidad</span>
+              {/* block + min-h reserva la altura antes de que arranque el decrypt
+                  evitando layout shift. tracking-tight anula el espaciado extra
+                  que heredaría de font-mono. */}
+              <span className="block min-h-[1.2em]">
+                <DecryptText
+                  text="exponer tu vida"
+                  className="text-gradient-emerald tracking-tight"
+                  delay={600}
+                  speed={35}
+                  repeatInterval={5000}
+                />
+              </span>
             </motion.h1>
 
             <motion.p
@@ -63,12 +72,12 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base text-slate-400 mb-8 leading-relaxed max-w-lg"
             >
-               Analiza tu currículum  para detectar información
-              personal sensible antes de que llegue a manos equivocadas. Sin bases
-              de datos. Sin almacenamiento. Solo resultados.
+              Analiza tu currículum para detectar información personal sensible
+              antes de que llegue a manos equivocadas. Sin bases de datos.
+              Sin almacenamiento. Solo resultados.
             </motion.p>
 
-            <motion.div
+             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -90,15 +99,14 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-           {/* simulacion de cv analizado */}
+          {/* simulación de CV analizado */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative"
+            className="relative w-full"
           >
             <CvSimulator />
-
           </motion.div>
 
         </div>

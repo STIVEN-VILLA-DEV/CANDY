@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Github, Linkedin, Shield } from "lucide-react";
 
-const GITHUB_URL = "https://github.com";
-const LINKEDIN_URL = "https://www.linkedin.com";
+const GITHUB_URL = "https://github.com/STIVEN-VILLA-DEV";
+const LINKEDIN_URL = "https://co.linkedin.com/in/stiven-villa-416745252";
 
 export default function Footer() {
   return (
@@ -40,7 +40,7 @@ export default function Footer() {
           >
             <Linkedin className="w-5 h-5" aria-hidden />
           </Link>
-          <span>© 2026 VillaDev</span>
+          <span>2026 VillaDev</span>
         </div>
       </div>
     </footer>

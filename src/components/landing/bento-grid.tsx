@@ -74,14 +74,9 @@ export default function BentoGrid() {
         className="text-center mb-16"
       >
         <div className="inline-block font-mono text-left bg-emerald-950/20 border border-emerald-900/30 rounded-lg px-5 py-3">
-          <div className="flex items-center gap-2 text-emerald-600 text-xs mb-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>cv-shield v2.4.1</span>
-          </div>
           <div className="flex items-center gap-2">
             <span className="text-slate-500">[{">"}]</span>
             <span className="text-white font-semibold text-sm">Seguridad sin compromisos</span>
-            <span className="text-emerald-500 font-bold">_</span>
             <span className={`w-2 h-4 bg-emerald-500 ${cursorVisible ? "opacity-100" : "opacity-0"} transition-opacity duration-75`} />
           </div>
         </div>
@@ -114,7 +109,7 @@ export default function BentoGrid() {
                 item.color === "jade" ? "text-jade" : "text-emerald-400"
               }`}
             />
-            <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+          <h3 className="font-heading font-semibold text-lg mb-2">{item.title}</h3>
             <p className="text-slate-400 text-sm leading-relaxed">{item.description}</p>
           </motion.div>
         ))}

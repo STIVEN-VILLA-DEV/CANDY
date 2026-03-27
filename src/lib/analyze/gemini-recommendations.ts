@@ -6,9 +6,13 @@ const geminiApiKey = process.env.GEMINI_API_KEY;
 const geminiModel = process.env.GEMINI_MODEL ?? "gemini-1.5-flash-8b";
 
 export const DEFAULT_ATS_RECOMMENDATIONS = [
-  "Usa una versión pública de la hoja de vida sin cédula, NIT, dirección exacta ni celular personal; deja un canal de contacto profesional.",
-  "Separa el correo y el número que das a reclutadores del que usas para banca o redes; así reduces phishing y suplantación.",
+  "No incluyas tu dirección exacta, calle o número de casa; indica únicamente tu Ciudad y Estado/Provincia para proteger tu privacidad física.",
+  "Utiliza una cuenta de correo exclusiva para temas laborales (ej. nombre.apellido@email.com) para evitar spam y proteger el acceso a tus cuentas personales.",
   "Para ATS en Colombia, prioriza logros cuantificables, roles y herramientas; la ubicación puede ser solo ciudad y departamento.",
+  "No incluyas datos de contacto de terceros (jefes o colegas) en el documento inicial; entrega esta información solo cuando el proceso de selección esté avanzado.",
+  "Prescinde de tablas, iconos, logotipos o barras de porcentaje de habilidades, ya que el ATS suele interpretarlos como caracteres ilegibles o espacios en blanco.",
+
+
 ] as const;
 
 export async function generateAtsRecommendationsFromSummary(
