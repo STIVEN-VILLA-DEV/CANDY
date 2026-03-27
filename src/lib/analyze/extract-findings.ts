@@ -29,17 +29,15 @@ const DOB_FULL_REGEX =
 const DOB_YEAR_REGEX =
   /\b(?:nacido\s+en|born\s+in|año\s+de\s+nacimiento)\s*[:\-]?\s*(19|20)\d{2}\b/gi;
 
-// Dirección — requiere que la palabra clave vaya seguida de un número para no tener falsos positivos
+// Dirección — patrones más estrictos para evitar falsos positivos y backtracking
 const ADDRESS_STREET_REGEX =
-  /\b(?:calle|cl\.?|carrera|cra\.?|kr\.?|avenida|av\.?|transversal|tv\.?|diagonal|diag\.?)\s*\d+[\w\s.,#°\-]{0,60}/gi;
+  /\b(?:calle|cl\.?|carrera|cra\.?|kr\.?|avenida|av\.?|transversal|tv\.?|diagonal|diag\.?)\s+\d+[a-z0-9\s.,#°\-]{0,50}/gi;
 
-// "dirección" solo cuenta si va seguida de nomenclatura (número o abreviatura vial)
 const ADDRESS_LABEL_REGEX =
-  /\bdirecci[oó]n\s*[:\-]?\s*(?:calle|cl\.?|carrera|cra\.?|kr\.?|avenida|av\.?|transversal|tv\.?|\d)[\w\s.,#°\-]{0,60}/gi;
+  /\bdirecci[oó]n\s*[:\-]?\s*(?:calle|cl\.?|carrera|cra\.?|kr\.?|avenida|av\.?|transversal|tv\.?|\d)[a-z0-9\s.,#°\-]{0,50}/gi;
 
-// Barrio/apto/torre también requieren número o nombre concreto después
 const ADDRESS_DETAIL_REGEX =
-  /\b(?:barrio|urbanizaci[oó]n|manzana|mz\.?|apto\.?|apartamento|torre)\s+[\w\d][\w\s.,#°\-]{0,50}/gi;
+  /\b(?:barrio|urbanizaci[oó]n|manzana|mz\.?|apto\.?|apartamento|torre)\s+[a-z0-9][a-z0-9\s.,#°\-]{0,40}/gi;
 
 // Redes sociales
 const LINKEDIN_REGEX = /\bhttps?:\/\/(?:www\.)?linkedin\.com\/[^\s)]{3,100}/gi;

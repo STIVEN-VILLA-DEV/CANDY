@@ -22,13 +22,17 @@ const nextConfig = {
           value: [
             "default-src 'self'",
             "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://clerk.com https://*.clerk.accounts.dev",
-            "worker-src blob:",
-            // Las fuentes ahora son self-hosted; ya no necesitamos fonts.googleapis.com
+            "worker-src 'self' blob:",
             "style-src 'self' 'unsafe-inline'",
-            "font-src 'self'",
+            "font-src 'self' data:",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://generativelanguage.googleapis.com",
-            "frame-src https://clerk.com https://*.clerk.accounts.dev",
+            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://clerk-telemetry.com https://generativelanguage.googleapis.com",
+            "frame-src 'self' https://clerk.com https://*.clerk.accounts.dev",
+            "base-uri 'self'",
+            "form-action 'self'",
+            "frame-ancestors 'none'",
+            // Comentado para desarrollo local si no usas SSL (HTTPS)
+            // "upgrade-insecure-requests",
           ].join("; "),
         },
       ],
