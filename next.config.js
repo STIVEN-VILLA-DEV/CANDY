@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     // unpdf (pdfjs-dist) debe resolverse en runtime Node.js, no bundlearse con webpack
     serverComponentsExternalPackages: ["unpdf"],
