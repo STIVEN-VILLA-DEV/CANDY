@@ -23,15 +23,16 @@ const nextConfig = {
           value: [
             "default-src 'self'",
             // Agregamos el wildcard de clerk.accounts.dev para que cargue desde cualquier subdominio oficial
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://clerk.com https://*.clerk.accounts.dev",
+            // Tambien incluimos los dominios de Cubepath para Clerk
+            "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://clerk.com https://*.clerk.accounts.dev https://clerk.cubepath.net https://*.cubepath.net",
             "worker-src 'self' blob:",
             "style-src 'self' 'unsafe-inline'",
             "font-src 'self' data:",
             "img-src 'self' data: https:",
             // connect-src necesita los dominios de Clerk y la API de Gemini
-            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://clerk-telemetry.com https://generativelanguage.googleapis.com",
+            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://clerk-telemetry.com https://generativelanguage.googleapis.com https://clerk.cubepath.net https://*.cubepath.net",
             // frame-src para la modal de Clerk
-            "frame-src 'self' https://clerk.com https://*.clerk.accounts.dev",
+            "frame-src 'self' https://clerk.com https://*.clerk.accounts.dev https://clerk.cubepath.net https://*.cubepath.net",
             "base-uri 'self'",
             "form-action 'self'",
             "frame-ancestors 'none'",
