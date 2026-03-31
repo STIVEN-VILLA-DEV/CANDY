@@ -15,10 +15,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider  publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-       appearance={clerkTheme}
-      proxyUrl={undefined} 
-      domain={undefined}
+    <ClerkProvider 
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      appearance={clerkTheme}
     >
       <html lang="es" className="dark">
         <body className="font-sans bg-background text-slate-100 antialiased">
