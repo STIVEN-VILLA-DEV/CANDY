@@ -4,33 +4,8 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["unpdf"],
   },
-  // ESTE COMENTARIO ES PARA FORZAR CAMBIO DE HASH 2026-03-31
-  headers: async () => [
-    {
-      source: "/(.*)",
-      headers: [
-        { key: "X-Frame-Options", value: "DENY" },
-        { key: "X-Content-Type-Options", value: "nosniff" },
-        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        {
-          key: "Content-Security-Policy",
-          value: [
-            "default-src 'self'",
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://clerk.com https://*.clerk.accounts.dev https://cdn.clerk.com",
-            "connect-src 'self' https://clerk.com https://*.clerk.accounts.dev https://clerk-telemetry.com https://generativelanguage.googleapis.com https://cdn.clerk.com",
-            "worker-src 'self' blob:",
-            "style-src 'self' 'unsafe-inline'",
-            "font-src 'self' data:",
-            "img-src 'self' data: https: blob:",
-            "frame-src 'self' https://clerk.com https://*.clerk.accounts.dev",
-            "base-uri 'self'",
-            "form-action 'self'",
-            "frame-ancestors 'none'",
-          ].join("; "),
-        },
-      ],
-    },
-  ],
+  // BORRAMOS LOS HEADERS DE SEGURIDAD PARA LA ENTREGA
+  headers: async () => [],
 };
 
 module.exports = nextConfig;
