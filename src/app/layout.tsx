@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider appearance={clerkTheme}>
+    <ClerkProvider appearance={clerkTheme}
+      proxyUrl={undefined} 
+      domain={undefined}
+    >
       <html lang="es" className="dark">
         <body className="font-sans bg-background text-slate-100 antialiased">
           {children}
